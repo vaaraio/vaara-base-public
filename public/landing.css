@@ -1272,7 +1272,7 @@ body[data-page="product"] .hero-company-actions {
   stroke-width: 0.07;
 }
 
-.map-wire-svg .map-flow-dot {
+.map-wire-svg .map-signal-dot {
   display: none;
 }
 
@@ -1282,26 +1282,26 @@ body[data-page="product"] .hero-company-actions {
   animation: mapAnchorBlink 1.9s ease-in-out infinite;
 }
 
-.map-flow-dot {
+.map-signal-dot {
   fill: rgba(134, 215, 170, 0.98);
   filter: drop-shadow(0 0 5px rgba(94, 184, 139, 0.76));
   animation: mapDotBlink 1.1s ease-in-out infinite;
 }
 
-.map-flow-dot-outer {
+.map-signal-dot-outer {
   fill: rgba(145, 225, 179, 1);
   filter: drop-shadow(0 0 6px rgba(102, 198, 149, 0.82));
   animation-duration: 1.25s;
 }
 
-.map-flow-layer {
+.map-signal-layer {
   position: absolute;
   inset: 0;
   z-index: 2;
   pointer-events: none;
 }
 
-.map-flow-point {
+.map-signal-point {
   position: absolute;
   left: calc(var(--x1) * 1%);
   top: calc(var(--y1) * 1%);
@@ -1319,7 +1319,7 @@ body[data-page="product"] .hero-company-actions {
   animation-delay: var(--delay, 0s), var(--delay, 0s);
 }
 
-.map-flow-point-outer {
+.map-signal-point-outer {
   width: 6px;
   height: 6px;
   margin-left: -3px;

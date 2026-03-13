@@ -108,19 +108,19 @@
     const innerH = height - pad * 2;
 
     const raw = [];
-    const flow = [];
+    const vaaraSeries = [];
     const switchGap = Math.max(0, rawActions - flowActions);
 
     for (let i = 0; i < points; i += 1) {
       const t = i / (points - 1);
       const base = 100 + t * 8;
       const rawNoise = Math.sin(i * 0.37) * 2.1 + Math.cos(i * 0.13) * 1.5;
-      const flowNoise = Math.sin(i * 0.22) * 0.8 + Math.cos(i * 0.11) * 0.6;
+      const signalNoise = Math.sin(i * 0.22) * 0.8 + Math.cos(i * 0.11) * 0.6;
       raw.push(base + rawNoise - t * (switchGap * 0.07));
-      flow.push(base + flowNoise + t * (switchGap * 0.11));
+      vaaraSeries.push(base + signalNoise + t * (switchGap * 0.11));
     }
 
-    const all = raw.concat(flow);
+    const all = raw.concat(vaaraSeries);
     const min = Math.min(...all);
     const max = Math.max(...all);
     const span = Math.max(1, max - min);
@@ -148,7 +148,7 @@
     ctx.strokeRect(pad, pad, innerW, innerH);
 
     drawLine(raw, "#ef4444", 1.5);
-    drawLine(flow, "#4ade80", 2);
+    drawLine(vaaraSeries, "#4ade80", 2);
   };
 
   const renderProtocols = (payload) => {
