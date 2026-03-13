@@ -158,10 +158,6 @@
     setText("switchesVal", productSnapshot.switches);
     setText("costSavedHero", productSnapshot.costSaved);
     setText("switchesHero", productSnapshot.switches.replace("Switches Avoided: ", ""));
-    setText("rawActionsVal", productSnapshot.rawActions);
-    setText("flowActionsVal", productSnapshot.vaaraActions);
-    setText("switchesMetricVal", productSnapshot.switches.replace("Switches Avoided: ", ""));
-    setText("costMetricVal", productSnapshot.costSaved);
     drawPreviewChart(Number(productSnapshot.rawActions), Number(productSnapshot.vaaraActions));
   };
 
