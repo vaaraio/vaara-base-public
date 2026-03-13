@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-label="Vaara wordmark">
+  <rect width="1200" height="360" fill="#0b0d11"/>
+  <rect x="48" y="48" width="264" height="264" rx="44" fill="rgba(120,160,138,0.12)" stroke="rgba(120,160,138,0.42)" stroke-width="2"/>
+  <polygon points="180,102 240,234 120,234" fill="#78a08a"/>
+  <text x="356" y="220" fill="#f3f5f2" font-family="Syne, Manrope, sans-serif" font-size="170" font-weight="700" letter-spacing="26">VAARA</text>
+</svg>

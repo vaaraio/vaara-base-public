@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vaara - Base Signal Intelligence</title>
+  <meta name="description" content="Vaara is execution-aware signal intelligence for Base. Acts less, explains more." />
+  <link rel="icon" type="image/svg+xml" href="/flow-static/brand/vaara-favicon.svg?v=20260311a" />
+  <link rel="stylesheet" href="/flow-static/fonts/fonts.css?v=20260310c" />
+  <link rel="stylesheet" href="/flow-static/landing.css?v=20260312m" />
+  <script src="/flow-static/landing.js?v=20260312a" defer></script>
+</head>
+<body data-page="product">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand-head" href="https://vaara.io/" aria-label="Open Vaara landing page">
+        <span class="brand-icon" aria-hidden="true"><span class="brand-tri"></span></span>
+        <span class="brand-kicker">Vaara</span>
+      </a>
+      <ul class="topbar-nav" aria-label="Primary navigation">
+        <li><span class="nav-live"><span class="live-dot"></span> Live</span></li>
+        <li><a href="#pilot">Demo</a></li>
+        <li><a href="mailto:pilot@vaara.io?subject=Vaara%20Pilot%20Request" class="cta">Request Pilot</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="Vaara product hero">
+      <img class="hero-photo" src="/flow-static/images/landing-hero.jpg" alt="Vaara landscape" />
+      <div class="hero-vignette"></div>
+
+      <div class="hero-content">
+        <div class="hero-eyebrow">Execution-aware signal intelligence for Base</div>
+
+        <div class="hero-headline-wrap">
+          <h1 class="hero-headline">Built to see<br /><em>over the noise.</em></h1>
+          <p class="hero-company-copy">Vaara translates live Base conditions into disciplined action surfaces so operators can act less, switch less, and understand why the decision changed.</p>
+          <div class="hero-company-actions">
+            <a href="https://vaara.io/" class="btn-light">See the company</a>
+            <a href="#proof" class="btn-light">See the capabilities</a>
+            <a href="mailto:hello@vaara.io?subject=Vaara%20Inquiry" class="btn-ghost btn-ghost-light">Contact Vaara</a>
+          </div>
+        </div>
+
+        <div class="scroll-hint" aria-hidden="true">
+          <div class="scroll-line"></div>
+          Scroll
+        </div>
+
+        <div class="hero-bars" aria-label="Live summary">
+          <article class="hero-bar">
+            <div class="bar-label">Signal State</div>
+            <div class="signal-value down" id="stateVal">Trend Down</div>
+            <div class="bar-sub"><span id="pairVal">WETH/USDC (Base)</span> · <span id="heldVal">Held 18 min</span></div>
+          </article>
+          <article class="hero-bar">
+            <div class="bar-label">Confidence</div>
+            <div class="bar-value" id="confVal">72.4%</div>
+            <div class="bar-sub">High conviction</div>
+          </article>
+          <article class="hero-bar">
+            <div class="bar-label">Vaara Action</div>
+            <div class="bar-value up" id="actionVal">HOLD</div>
+            <div class="bar-sub" id="rawActionVal">Raw wanted: BUY</div>
+          </article>
+          <article class="hero-bar">
+            <div class="bar-label">Estimated Cost Saved</div>
+            <div class="bar-value saved" id="costVal">84 bps</div>
+            <div class="bar-sub" id="switchesVal">Switches Avoided: 28</div>
+          </article>
+        </div>
+      </div>
+
+      <div class="visually-hidden" aria-hidden="true">
+        <span id="costSavedHero">84 bps</span>
+        <span id="switchesHero">28</span>
+      </div>
+    </section>
+
+    <div class="page-body">
+      <section class="content" id="proof">
+        <div class="section-label">Three pillars</div>
+        <h2 class="section-title">What Vaara shows you</h2>
+        <p class="section-sub">Raw streams over-act. Vaara applies stateful cost-aware filtering and acts less with clearer intent.</p>
+
+        <div class="pillars-grid">
+          <article class="pillar">
+            <div class="pillar-number">01</div>
+            <div class="pillar-tag">Signal State</div>
+            <div class="pillar-title">Market conditions, not just price</div>
+            <p class="pillar-body">Trend alignment, momentum confluence, volume regime, and breakout state for Base pairs. The conditions behind the move, not just the move itself.</p>
+          </article>
+          <article class="pillar">
+            <div class="pillar-number">02</div>
+            <div class="pillar-tag">Decision Discipline</div>
+            <div class="pillar-title">The restraint delta is visible</div>
+            <p class="pillar-body">Raw Actions, Vaara Actions, Switches Avoided, and Estimated Cost Saved are shown live. The gap between what the signal wanted and what Vaara committed to.</p>
+          </article>
+          <article class="pillar">
+            <div class="pillar-number">03</div>
+            <div class="pillar-tag">Base Native</div>
+            <div class="pillar-title">Coverage built for the Base ecosystem</div>
+            <p class="pillar-body">Anchor protocols plus recent deployments. Emerging and established risk shown side by side. Built for Base specifically, not adapted from generic tooling.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content" id="coverage">
+        <div class="coverage-header">
+          <div>
+            <div class="section-label">Coverage universe</div>
+            <h2 class="section-title">Ten Base protocols.<br /><span class="title-sub"><em>One intelligence layer.</em></span></h2>
+          </div>
+        </div>
+
+        <div class="coverage-ribbon-wrap">
+          <div class="coverage-grid" id="coverageGrid">
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Aerodrome Finance</div><span class="coverage-badge badge-anchor">Fixed</span></div>
+              <div class="coverage-desc">DEX anchor on Base</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Moonwell</div><span class="coverage-badge badge-fixed">Fixed</span></div>
+              <div class="coverage-desc">Lending (Coinbase-adjacent)</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Seamless Protocol</div><span class="coverage-badge badge-fixed">Fixed</span></div>
+              <div class="coverage-desc">Native lending</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Extra Finance</div><span class="coverage-badge badge-fixed">Fixed</span></div>
+              <div class="coverage-desc">Leveraged yield</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Beefy Finance</div><span class="coverage-badge badge-fixed">Fixed</span></div>
+              <div class="coverage-desc">Yield aggregation</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Overnight Finance</div><span class="coverage-badge badge-fixed">Fixed</span></div>
+              <div class="coverage-desc">Stablecoin yield / depeg</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Gains Network</div><span class="coverage-badge badge-fixed">Fixed</span></div>
+              <div class="coverage-desc">Perpetuals risk surface</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Reserve Protocol</div><span class="coverage-badge badge-fixed">Fixed</span></div>
+              <div class="coverage-desc">RToken deployer behavior</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Rocket Pool on Base</div><span class="coverage-badge badge-anchor">Fixed</span></div>
+              <div class="coverage-desc">LST exposure</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Recent Base 90d TVL leader</div><span class="coverage-badge badge-dynamic">Dynamic 90d</span></div>
+              <div class="coverage-desc">Highest TVL Base launch · last 90 days</div>
+              <div class="coverage-tvl">Resolved live</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-section" id="pilot">
+        <div class="section-label">Get access</div>
+        <h2 class="cta-title">Ready to see what the noise was hiding?</h2>
+        <p class="cta-sub">Vaara is live on Base now. Open the dashboard and watch the restraint delta accumulate in real time.</p>
+        <div class="cta-actions">
+          <a href="https://base.vaara.io/demo" class="btn-light">Open Live Demo</a>
+          <a href="mailto:pilot@vaara.io?subject=Vaara%20Pilot%20Request" class="btn-ghost">Request Pilot Access</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer-main">
+    <div class="footer-left">Vaara · Base L2 signal intelligence · © 2026</div>
+    <div class="footer-right">vaara.io</div>
+  </footer>
+</body>
+</html>
