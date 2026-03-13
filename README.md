@@ -13,7 +13,7 @@ Vaara is execution-aware decision infrastructure for high-noise systems, with Ba
 The product layer shown here is the public-facing part of that system:
 - company narrative surface
 - Base product surface
-- delayed, read-only public demo
+- live public demo URL
 
 ## Why this repo exists
 Some funding and ecosystem applications require a code repository, but Vaara's private pilot surface and execution internals are intentionally not public. This repository is the review-safe package: enough to inspect the product layer, architecture direction, and frontend quality without exposing private logic or credentials.
@@ -24,6 +24,7 @@ Some funding and ecosystem applications require a code repository, but Vaara's p
 - Public architecture and security notes
 
 ## What this repo intentionally excludes
+- Public demo implementation details beyond the live URL
 - Private pilot surface implementation
 - Execution logic and policy internals
 - API keys, secrets, credentials, and environment files
@@ -31,12 +32,12 @@ Some funding and ecosystem applications require a code repository, but Vaara's p
 - Wallet, signing, and infrastructure credentials
 
 ## Repository layout
-- `public/` - public-safe frontend files
+- `public/` - public-safe company and product frontend files
 - `assets/` - brand assets and hero image
 - `docs/` - high-level public architecture notes
 
 ## Reviewer note
-This repository is meant to show the live public product layer, not to reproduce the full private runtime. Some frontend files still reference deployment paths used by the live service.
+This repository is meant to show the live public product layer, not to reproduce the full private runtime.
 
 ## Contact
 hello@vaara.io

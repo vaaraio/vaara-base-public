@@ -35,10 +35,10 @@
 
   const formatTvlDelta = (value) => {
     const n = toNumber(value, Number.NaN);
-    if (!Number.isFinite(n)) return { text: "1D TVL flow n/a", tone: "flat" };
+    if (!Number.isFinite(n)) return { text: "1D TVL delta n/a", tone: "flat" };
     const sign = n > 0 ? "+" : "";
     const tone = n > 0.1 ? "up" : n < -0.1 ? "down" : "flat";
-    return { text: `1D TVL flow ${sign}${n.toFixed(2)}%`, tone };
+    return { text: `1D TVL delta ${sign}${n.toFixed(2)}%`, tone };
   };
 
   const pickTvl = (row) => {
