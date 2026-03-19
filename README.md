@@ -7,6 +7,10 @@ Public-safe repository snapshot for Vaara's live Base product surfaces.
 - Product: https://base.vaara.io
 - Public demo: https://base.vaara.io/demo
 
+## Latest update
+- Public demo messaging now highlights restraint economics (BPS savings focus) with clearer value framing for pilots/funders.
+- Public surface remains strict-safe: private decision internals are intentionally redacted.
+
 ## What Vaara is
 Vaara is execution-aware decision infrastructure for high-noise systems, with Base as the first live wedge.
 
