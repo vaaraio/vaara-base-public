@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Vaara X avatar">
+  <rect width="400" height="400" rx="0" fill="#0b0d11"/>
+  <rect x="60" y="60" width="280" height="280" rx="48" fill="rgba(120,160,138,0.12)" stroke="rgba(120,160,138,0.42)" stroke-width="3"/>
+  <polygon points="200,120 268,272 132,272" fill="#78a08a"/>
+</svg>

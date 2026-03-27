@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vaara - Request Pilot Access</title>
+  <meta name="description" content="Request pilot access to Vaara's full-fidelity DeFi signal intelligence API for Base L2. Unquantized data, equity curves, and promotion readiness." />
+  <meta property="og:title" content="Vaara - Request Pilot Access" />
+  <meta property="og:description" content="Request pilot access to Vaara's full-fidelity DeFi signal intelligence API for Base L2." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://base.vaara.io/pilot" />
+  <meta property="og:image" content="https://base.vaara.io/base-static/brand/og-preview.png?v=20260327" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Vaara - Request Pilot Access" />
+  <meta name="twitter:description" content="Request pilot access to Vaara's full-fidelity DeFi signal intelligence API for Base L2." />
+  <meta name="twitter:image" content="https://base.vaara.io/base-static/brand/og-preview.png?v=20260327" />
+  <link rel="canonical" href="https://base.vaara.io/pilot" />
+  <link rel="icon" type="image/svg+xml" href="/base-static/brand/vaara-favicon.svg?v=20260320a" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/base-static/brand/vaara-favicon-32.png?v=20260320a" />
+  <link rel="shortcut icon" href="/base-static/brand/favicon.ico?v=20260320a" />
+  <link rel="stylesheet" href="/base-static/fonts/fonts.css?v=20260310c" />
+  <link rel="stylesheet" href="/base-static/landing.css?v=20260326c" />
+</head>
+<body data-page="pilot">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand-head" href="https://vaara.io/" aria-label="Open Vaara landing page">
+        <span class="brand-icon" aria-hidden="true"><span class="brand-tri"></span></span>
+        <span class="brand-kicker">Vaara</span>
+      </a>
+      <ul class="topbar-nav" aria-label="Primary navigation">
+        <li><span class="nav-live"><span class="live-dot"></span> Live</span></li>
+        <li><a href="/demo">Demo</a></li>
+        <li><a href="/product">Product</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero pilot-hero" aria-label="Pilot request">
+      <img class="hero-photo" src="/base-static/images/landing-hero.jpg" alt="Vaara landscape" />
+      <div class="hero-vignette"></div>
+
+      <div class="hero-content pilot-hero-content">
+        <div class="hero-eyebrow">Pilot access request</div>
+
+        <div class="pilot-form-wrap">
+          {% if submitted %}
+          <div class="pilot-confirmation">
+            <h1 class="pilot-title">Request received.</h1>
+            <p class="pilot-sub">We review pilot requests manually and follow up by email if there is a fit.</p>
+            <div class="pilot-conf-actions">
+              <a href="/demo" class="btn-light">Explore the Public Demo</a>
+              <a href="/" class="btn-ghost btn-ghost-light">Back to Vaara</a>
+            </div>
+          </div>
+          {% else %}
+          <h1 class="pilot-title">Get pilot access.</h1>
+          <p class="pilot-sub">Public demo is live. Pilot access is reviewed manually and scoped with selected partners.</p>
+
+          {% if error %}
+          <div class="pilot-error">{{ error }}</div>
+          {% endif %}
+
+          <form class="pilot-form" method="POST" action="/pilot">
+            <div class="form-row">
+              <div class="form-group form-half">
+                <label class="form-label" for="name">Name <span class="form-required">*</span></label>
+                <input class="form-input" type="text" id="name" name="name" placeholder="Jane Smith" required autocomplete="name" />
+              </div>
+              <div class="form-group form-half">
+                <label class="form-label" for="email">Work Email <span class="form-required">*</span></label>
+                <input class="form-input" type="email" id="email" name="email" placeholder="jane@protocol.xyz" required autocomplete="email" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="org">Organization <span class="form-required">*</span></label>
+              <input class="form-input" type="text" id="org" name="org" placeholder="Protocol, fund, or project name" required autocomplete="organization" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="role">Your Role</label>
+              <select class="form-input form-select" id="role" name="role">
+                <option value="" disabled selected>Select your role</option>
+                <option value="vault_operator">Vault / Yield Operator</option>
+                <option value="treasury">Protocol Treasury</option>
+                <option value="trading_desk">Trading Desk</option>
+                <option value="risk_team">Risk / Compliance</option>
+                <option value="developer">Developer / Integrator</option>
+                <option value="researcher">Researcher / Analyst</option>
+                <option value="investor">Investor / BD</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="use_case">What would you plug Vaara into?</label>
+              <select class="form-input form-select" id="use_case" name="use_case">
+                <option value="" disabled selected>Select primary use case</option>
+                <option value="vault_rebalancing">Vault rebalancing filter</option>
+                <option value="treasury_management">Treasury position management</option>
+                <option value="risk_dashboard">Risk dashboard / alerting</option>
+                <option value="trading_overlay">Trading strategy overlay</option>
+                <option value="bot_pretrade">Bot pre-trade quality gate</option>
+                <option value="research">Research / backtesting</option>
+                <option value="explore">Just exploring</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="note">Anything else? <span class="form-optional">(optional)</span></label>
+              <input class="form-input" type="text" id="note" name="note" placeholder="Specific chains, volume, timeline..." />
+            </div>
+            <button class="pilot-submit" type="submit">Request Access</button>
+            <p class="form-note">Public demo is open now. Pilot requests are reviewed manually.</p>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer-main">
+    <div class="footer-left">Vaara · Signal intelligence · Live on Base L2 · © 2026</div>
+    <div class="footer-links">
+      <a href="/about">Founder</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </div>
+    <div class="footer-right">hello@vaara.io</div>
+  </footer>
+</body>
+</html>

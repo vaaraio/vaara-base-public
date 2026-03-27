@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="google-site-verification" content="qNehxPhcwRbLwZ91gkyEZDhJ3MmFSj5cm6w6veMucrQ" />
+  <title>Vaara - How It Works</title>
+  <meta name="description" content="Vaara's stateful cost-aware signal filter for Base L2. See how it works, what it costs, and how to integrate." />
+  <meta property="og:title" content="Vaara - How It Works" />
+  <meta property="og:description" content="Stateful cost-aware signal filter for Base L2. See how Vaara scores vault operations as conviction or noise." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://base.vaara.io/product" />
+  <meta property="og:image" content="https://base.vaara.io/base-static/brand/og-preview.png?v=20260327" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Vaara - How It Works" />
+  <meta name="twitter:description" content="Stateful cost-aware signal filter for Base L2. See how Vaara scores vault operations as conviction or noise." />
+  <meta name="twitter:image" content="https://base.vaara.io/base-static/brand/og-preview.png?v=20260327" />
+  <link rel="canonical" href="https://base.vaara.io/product" />
+  <link rel="icon" type="image/svg+xml" href="/base-static/brand/vaara-favicon.svg?v=20260320a" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/base-static/brand/vaara-favicon-32.png?v=20260320a" />
+  <link rel="shortcut icon" href="/base-static/brand/favicon.ico?v=20260320a" />
+  <link rel="stylesheet" href="/base-static/fonts/fonts.css?v=20260310c" />
+  <link rel="stylesheet" href="/base-static/landing.css?v=20260326b" />
+  <script src="/base-static/landing.js?v=20260321c" defer></script>
+</head>
+<body data-page="product">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand-head" href="https://vaara.io/" aria-label="Open Vaara landing page">
+        <span class="brand-icon" aria-hidden="true"><span class="brand-tri"></span></span>
+        <span class="brand-kicker">Vaara</span>
+      </a>
+      <ul class="topbar-nav" aria-label="Primary navigation">
+        <li><span class="nav-live"><span class="live-dot"></span> Live</span></li>
+        <li><a href="/demo">Demo</a></li>
+        <li><a href="/pilot" class="cta">Request Pilot</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="Vaara product hero">
+      <img class="hero-photo" src="/base-static/images/landing-hero.jpg" alt="Vaara landscape" />
+      <div class="hero-vignette"></div>
+
+      <div class="hero-content">
+        <div class="hero-eyebrow">Signal intelligence for Base L2 · Live now</div>
+
+        <div class="hero-headline-wrap">
+          <h1 class="hero-headline">The cost of<br /><em>acting on noise.</em></h1>
+          <p class="hero-company-copy">Vaara monitors Base L2 markets in real time and quantifies the cost of every unnecessary position change. The live demo below shows exactly how many switches were avoided and what they would have cost.</p>
+          <div class="hero-company-actions">
+            <a href="/demo" class="btn-light">Open Live Demo</a>
+            <a href="#scenario" class="btn-light">See Concrete Savings</a>
+            <a href="/pilot" class="btn-ghost btn-ghost-light">Request Pilot Access</a>
+          </div>
+        </div>
+
+        <div class="scroll-hint" aria-hidden="true">
+          <div class="scroll-line"></div>
+          Scroll
+        </div>
+
+        <div class="hero-bars" aria-label="Live summary">
+          <article class="hero-bar">
+            <div class="bar-label">Signal State</div>
+            <div class="signal-value down" id="stateVal">Trend Down</div>
+            <div class="bar-sub"><span id="pairVal">WETH/USDC (Base)</span> · <span id="heldVal">Held 18 min</span></div>
+          </article>
+          <article class="hero-bar">
+            <div class="bar-label">Confidence</div>
+            <div class="bar-value" id="confVal">72.4%</div>
+            <div class="bar-sub">Conviction strength</div>
+          </article>
+          <article class="hero-bar">
+            <div class="bar-label">Vaara Action</div>
+            <div class="bar-value up" id="actionVal">HOLD</div>
+            <div class="bar-sub" id="rawActionVal">Raw wanted: BUY</div>
+          </article>
+          <article class="hero-bar">
+            <div class="bar-label">Cost Saved</div>
+            <div class="bar-value saved" id="costVal">84 bps</div>
+            <div class="bar-sub" id="switchesVal">Switches Avoided: 28</div>
+          </article>
+        </div>
+      </div>
+
+      <div class="visually-hidden" aria-hidden="true">
+        <span id="costSavedHero">84 bps</span>
+        <span id="switchesHero">28</span>
+      </div>
+    </section>
+
+    <div class="page-body">
+      <section class="content" id="proof">
+        <div class="section-label">What you get</div>
+        <h2 class="section-title">Three things Vaara shows<br /><span class="title-sub"><em>that raw signals can't.</em></span></h2>
+        <p class="section-sub">Raw market feeds tell you price moved. Vaara tells you whether that move justifies an action, what the action costs, and what you save by waiting.</p>
+
+        <div class="pillars-grid">
+          <article class="pillar">
+            <div class="pillar-number">01</div>
+            <div class="pillar-tag">Market State</div>
+            <div class="pillar-title">Regime, not just price</div>
+            <p class="pillar-body">Trend alignment across 3 timeframes, momentum confluence, volume regime, and breakout detection. You see the market's structure, not its noise. This is what determines whether a move is tradeable or just volatility.</p>
+          </article>
+          <article class="pillar">
+            <div class="pillar-number">02</div>
+            <div class="pillar-tag">Cost Awareness</div>
+            <div class="pillar-title">Every switch has a price</div>
+            <p class="pillar-body">Vaara's stateful selector tracks the cost of changing position. It won't recommend switching unless the expected advantage exceeds the switching cost. Raw signals don't think about this. Vaara does.</p>
+          </article>
+          <article class="pillar">
+            <div class="pillar-number">03</div>
+            <div class="pillar-tag">Proof</div>
+            <div class="pillar-title">Quantified restraint, live</div>
+            <p class="pillar-body">Avoided switches and estimated savings accumulate in real time. The equity curve comparison shows Raw Actions vs Vaara Actions. The gap between them is the cost of acting on noise.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content content-ink" id="scenario">
+        <div class="section-label section-label-light">Concrete scenario</div>
+        <div class="narrative-grid">
+          <div class="narrative-copy">
+            <h2 class="section-title section-title-light">Real proof,<br /><span class="title-sub"><em>not projections.</em></span></h2>
+            <p class="section-sub section-sub-light">62-day overlay against a live CLM vault on Base. 100% on-chain pool data. Up to 54% directional accuracy at unanimous ensemble consensus, walk-forward validated on 655K samples. Every number below is from production.</p>
+          </div>
+          <div class="narrative-steps">
+            <article class="narrative-step">
+              <div class="narrative-index">Without</div>
+              <div>
+                <div class="narrative-title">20 operations over 62 days</div>
+                <p class="narrative-body">Automated rebalances and harvests fired on schedule, regardless of market conditions. 71% of moveTick attempts failed outright — pure gas waste. No signal quality check before execution.</p>
+              </div>
+            </article>
+            <article class="narrative-step">
+              <div class="narrative-index">With Vaara</div>
+              <div>
+                <div class="narrative-title">40% filtered as noise</div>
+                <p class="narrative-body">Of 20 scored operations, 13 were conviction and 7 were noise. 83% of rebalances aligned with real market trends. 63% of harvests fired during sideways markets where compounding added no value. ML engine runs a 15-model ensemble with 3-layer confidence scoring, walk-forward validated on 655K samples across 30 features. At unanimous consensus, directional accuracy reaches 54% on 131K out-of-sample test points — the system's value is filtering when to act vs when to hold.</p>
+              </div>
+            </article>
+            <article class="narrative-step">
+              <div class="narrative-index">Proof</div>
+              <div>
+                <div class="narrative-title">Every suppressed switch is logged</div>
+                <p class="narrative-body">You don't take this on faith. The live demo shows every avoided switch, its estimated cost, and the cumulative savings. All data is on-chain and auditable by design.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="content" id="integrate">
+        <div class="section-label">Integration</div>
+        <h2 class="section-title">One endpoint.<br /><span class="title-sub"><em>Your existing stack.</em></span></h2>
+        <p class="section-sub">Vaara is API-first. No SDK required. Poll the summary endpoint and integrate market state, confidence, and action recommendations into your vault logic, risk dashboard, or alerting system.</p>
+
+        <div class="integration-block">
+          <div class="integration-example">
+            <div class="integration-label">Public endpoint (delayed, quantized)</div>
+            <pre class="integration-code"><code>curl https://base.vaara.io/api/base/public/summary</code></pre>
+          </div>
+          <div class="integration-response">
+            <div class="integration-label">Key fields in the response</div>
+            <div class="integration-fields">
+              <span class="field-tag">market_state</span>
+              <span class="field-tag">confidence_pct</span>
+              <span class="field-tag">raw_action</span>
+              <span class="field-tag">base_action</span>
+              <span class="field-tag">avoided_switches</span>
+              <span class="field-tag">cost_saved_bps</span>
+              <span class="field-tag">trend_alignment</span>
+              <span class="field-tag">momentum_5m / 15m / 60m</span>
+              <span class="field-tag">protocols[] with TVL + 1d change</span>
+            </div>
+          </div>
+          <div class="integration-example" style="margin-top: 24px;">
+            <div class="integration-label">Pilot endpoint (full fidelity, requires token)</div>
+            <pre class="integration-code"><code>curl -H "Authorization: Bearer YOUR_TOKEN" \
+     https://base.vaara.io/api/base/summary</code></pre>
+          </div>
+          <div class="integration-note">
+            Pilot accounts include: unquantized real-time data, complete equity curves, promotion readiness checks, JSON schema contract, and integration support. <a href="/pilot">Request access</a>.
+          </div>
+        </div>
+      </section>
+
+      <section class="content" id="trust">
+        <div class="section-label">Trust model</div>
+        <h2 class="section-title">We gate our own<br /><span class="title-sub"><em>promotion readiness.</em></span></h2>
+        <p class="section-sub">Vaara uses a quantitative promotion gate system internally. The signal engine must pass 12 quality checks — including directional accuracy, drawdown limits, and acceptance rate floors — before any deployment is recommended. This is infrastructure-grade discipline applied to signal quality.</p>
+
+        <div class="pillars-grid trust-grid">
+          <article class="pillar">
+            <div class="pillar-number">12</div>
+            <div class="pillar-tag">Quality Checks</div>
+            <div class="pillar-title">Per-symbol gate</div>
+            <p class="pillar-body">Directional hit rate, forward return quality, drawdown limits, cost drag caps, calibration requirements, and more. All must pass before live deployment.</p>
+          </article>
+          <article class="pillar">
+            <div class="pillar-number">24/7</div>
+            <div class="pillar-tag">Monitoring</div>
+            <div class="pillar-title">Automatic rollback triggers</div>
+            <p class="pillar-body">If performance degrades past safety thresholds, the system automatically flags for rollback. No manual intervention needed. The gate protects downstream consumers.</p>
+          </article>
+          <article class="pillar">
+            <div class="pillar-number">API</div>
+            <div class="pillar-tag">Transparency</div>
+            <div class="pillar-title">Promotion readiness endpoint</div>
+            <p class="pillar-body">Pilot accounts can query <code>/api/base/promotion_readiness</code> to see the current gate status, individual check results, and the system's own recommendation on deployment readiness.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content" id="coverage">
+        <div class="coverage-header">
+          <div>
+            <div class="section-label">Protocol coverage</div>
+            <h2 class="section-title">Ten Base protocols.<br /><span class="title-sub"><em>One intelligence layer.</em></span></h2>
+          </div>
+        </div>
+
+        <div class="coverage-ribbon-wrap">
+          <div class="coverage-grid" id="coverageGrid">
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Aerodrome Finance</div><span class="coverage-badge badge-anchor">Fixed</span></div>
+              <div class="coverage-desc">DEX anchor on Base</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Moonwell</div><span class="coverage-badge badge-fixed">Fixed</span></div>
+              <div class="coverage-desc">Lending (Coinbase-adjacent)</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Seamless Protocol</div><span class="coverage-badge badge-fixed">Fixed</span></div>
+              <div class="coverage-desc">Native lending</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Extra Finance</div><span class="coverage-badge badge-fixed">Fixed</span></div>
+              <div class="coverage-desc">Leveraged yield</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Beefy Finance</div><span class="coverage-badge badge-fixed">Fixed</span></div>
+              <div class="coverage-desc">Yield aggregation</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Overnight Finance</div><span class="coverage-badge badge-fixed">Fixed</span></div>
+              <div class="coverage-desc">Stablecoin yield / depeg</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Gains Network</div><span class="coverage-badge badge-fixed">Fixed</span></div>
+              <div class="coverage-desc">Perpetuals risk surface</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Reserve Protocol</div><span class="coverage-badge badge-fixed">Fixed</span></div>
+              <div class="coverage-desc">RToken deployer behavior</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Rocket Pool on Base</div><span class="coverage-badge badge-anchor">Fixed</span></div>
+              <div class="coverage-desc">LST exposure</div>
+              <div class="coverage-tvl">Live TVL feed</div>
+            </article>
+            <article class="coverage-card">
+              <div class="coverage-card-top"><div class="coverage-name">Recent Base 90d TVL leader</div><span class="coverage-badge badge-dynamic">Dynamic 90d</span></div>
+              <div class="coverage-desc">Highest TVL Base launch · last 90 days</div>
+              <div class="coverage-tvl">Resolved live</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-section" id="pilot">
+        <div class="section-label">Get access</div>
+        <h2 class="cta-title">See what the noise is costing you.</h2>
+        <p class="cta-sub">Open the public demo to watch the filter work in real time. Or request pilot access for full-fidelity endpoints and integration support.</p>
+        <div class="cta-actions">
+          <a href="/demo" class="btn-light">Open Live Demo</a>
+          <a href="/pilot" class="btn-ghost">Request Pilot Access</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer-main">
+    <div class="footer-left">Vaara · Signal intelligence · Live on Base L2 · © 2026</div>
+    <div class="footer-links">
+      <a href="/about">Founder</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </div>
+    <div class="footer-right">hello@vaara.io</div>
+  </footer>
+</body>
+</html>

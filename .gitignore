@@ -1,8 +1,72 @@
+# macOS / editor
 .DS_Store
-.env
-.env.*
-*.key
-*.pem
-*.log
-runtime/
+.vscode/
+.idea/
+
+# Python caches / venvs
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Runtime data and logs
 logs/
+runtime/
+output/
+backups/
+*.log
+
+# Databases and checkpoints
+*.sqlite
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+*.db
+*.wal
+*.shm
+
+# Secrets / key material
+*.env
+*.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.der
+*.jks
+*.kdbx
+
+# Build artifacts
+*.pyc
+*.pyo
+*.so
+
+# Node artifacts if used
+node_modules/
+
+# Archive exports
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Backup files
+*.bak
+
+# ML models and datasets (proprietary)
+research/rocm_lab/models/
+research/rocm_lab/models_challenger/
+research/gpu/datasets/
+*.pt
+
+# Session handoffs (internal)
+HANDOFF*.md
+
+# Infrastructure (contains IPs/credentials)
+deploy/ce-aliases.sh
+deploy/ubuntu/scripts/sync_and_trigger_restart.sh
+deploy/ubuntu/scripts/base_public_release_block.sh
+crypto-engine.env

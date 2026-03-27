@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="google-site-verification" content="qNehxPhcwRbLwZ91gkyEZDhJ3MmFSj5cm6w6veMucrQ" />
+  <title>Vaara - {{ "Public Demo" if surface_mode == "demo" else "Live Dashboard" }}</title>
+  <meta name="description" content="Live DeFi signal intelligence dashboard for Base L2. Real-time regime detection, conviction scoring, and vault operation analysis." />
+  <meta property="og:title" content="Vaara - Live Signal Dashboard" />
+  <meta property="og:description" content="Live DeFi signal intelligence for Base L2. Real-time regime detection, conviction scoring, and vault operation analysis." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://base.vaara.io/demo" />
+  <meta property="og:image" content="https://base.vaara.io/base-static/brand/og-preview.png?v=20260327" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Vaara - Live Signal Dashboard" />
+  <meta name="twitter:description" content="Live DeFi signal intelligence for Base L2. Real-time regime detection, conviction scoring, and vault operation analysis." />
+  <meta name="twitter:image" content="https://base.vaara.io/base-static/brand/og-preview.png?v=20260327" />
+  <link rel="canonical" href="https://base.vaara.io/demo" />
+  <link rel="icon" type="image/svg+xml" href="/base-static/brand/vaara-favicon.svg?v=20260319c" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/base-static/brand/vaara-favicon-32.png?v=20260319c" />
+  <link rel="shortcut icon" href="/base-static/brand/favicon.ico?v=20260319c" />
+  <link rel="stylesheet" href="/base-static/fonts/fonts.css?v=20260310c" />
+  <link rel="stylesheet" href="/base-static/base.css?v=20260327" />
+</head>
+<body
+  data-summary-endpoint="{{ summary_endpoint or '/api/base/summary' }}"
+  data-protocols-endpoint="{{ '/api/base/public/protocols' if surface_mode == 'demo' else '/api/base/protocols' }}"
+  data-surface-mode="{{ surface_mode or 'app' }}"
+>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand-head" href="https://vaara.io/" aria-label="Go to Vaara landing page">
+        <span class="brand-icon" aria-hidden="true"><span class="brand-tri"></span></span>
+        <span class="brand-kicker">Vaara</span>
+      </a>
+      <ul class="topbar-nav" aria-label="Dashboard navigation">
+        <li><a href="/demo" {% if surface_mode == "demo" %}class="active" aria-current="page"{% endif %}>Demo</a></li>
+        <li><a href="https://base.vaara.io/">Landing</a></li>
+      </ul>
+      <div class="topbar-status">
+        <span class="nav-live topbar-live"><span class="live-dot"></span> Live</span>
+        <span class="topbar-timestamp" id="lastUpdated">Updated --</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="page-header">
+      <div>
+        <div class="page-eyebrow">
+          {% if surface_mode == "demo" %}
+          Public preview for Base · delayed + aggregated · read-only
+          {% else %}
+          Operator surface for Base · live + full fidelity
+          {% endif %}
+        </div>
+        <h1 class="page-title">Signal<br /><em>Vaara, live.</em></h1>
+      </div>
+      <div class="page-header-right">
+        <div class="surface-tag demo-only">Public Preview · Delayed</div>
+        <div class="surface-tag app-only">Live Surface · Full Fidelity</div>
+        <div class="pair-pill"><strong id="pairName">WETH/USDC (Base)</strong></div>
+        <div class="header-ts">Held <span id="heldMinutes" class="skel"></span> min</div>
+      </div>
+    </section>
+
+    <section class="titlebar">
+      <div class="titlebar-left">
+        <span class="titlebar-tri" aria-hidden="true"></span>
+        <span class="titlebar-label">Signal State</span>
+      </div>
+      <span class="titlebar-meta" id="pairNameContext">WETH/USDC (Base)</span>
+    </section>
+
+    <section class="signal-strip" aria-label="Live signal strip">
+      <article class="signal-cell">
+        <div class="signal-label">Market State</div>
+        <div class="signal-value skel" id="marketState"></div>
+        <div class="signal-sub">Directional bias active</div>
+      </article>
+      <article class="signal-cell">
+        <div class="signal-label">Confidence</div>
+        <div class="signal-value skel" id="confidencePct"></div>
+        <div class="signal-sub"><span class="skel" id="confidenceStatus"></span></div>
+      </article>
+      <article class="signal-cell">
+        <div class="signal-label">Raw Action</div>
+        <div class="signal-value skel" id="rawAction"></div>
+        <div class="signal-sub">Unfiltered signal</div>
+      </article>
+      <article class="signal-cell">
+        <div class="signal-label">Vaara Action</div>
+        <div class="signal-value skel" id="baseAction"></div>
+        <div class="signal-sub signal-sub-logic app-only" id="baseActionLogic">Committed via stateful selector.</div>
+        <div class="signal-sub signal-sub-logic demo-only" id="baseActionDemoHint">Preview mode: full selector rationale is shown in the private live surface.</div>
+        <div class="signal-sub signal-sub-emphasis"><span id="costSavedBps" class="skel"></span> saved · <span id="avoidedSwitches" class="skel"></span> avoided</div>
+      </article>
+    </section>
+
+    <section class="titlebar titlebar-decision">
+      <div class="titlebar-left">
+        <span class="titlebar-tri" aria-hidden="true"></span>
+        <span class="titlebar-label">Decision Record</span>
+      </div>
+      <span class="titlebar-meta" id="proofMode">Live counters begin on first Coinbase tick.</span>
+    </section>
+
+    <section class="decision-grid" aria-label="Decision metrics">
+      <article class="decision-cell">
+        <div class="decision-label">Raw Actions</div>
+        <div class="decision-value skel" id="rawActionsToday"></div>
+      </article>
+      <article class="decision-cell">
+        <div class="decision-label">Vaara Actions</div>
+        <div class="decision-value skel" id="baseActionsToday"></div>
+      </article>
+      <article class="decision-cell proof-key">
+        <div class="decision-label">Switches Avoided</div>
+        <div class="decision-value skel" id="avoidedSwitchesWide"></div>
+      </article>
+      <article class="decision-cell proof-key">
+        <div class="decision-label">Estimated Cost Saved</div>
+        <div class="decision-value skel" id="costSavedBpsWide"></div>
+      </article>
+    </section>
+
+    <div class="decision-foot app-only" id="baseRationale">Base applies stateful cost-aware filtering, acting less with clearer intent than raw signal.</div>
+    <div class="decision-foot demo-only" id="baseRationaleDemo">Preview mode shows outcomes only. Full decision rationale is available in the private live surface.</div>
+
+    <section class="pilot-telemetry app-only" aria-label="Live telemetry">
+      <article class="telemetry-cell">
+        <div class="telemetry-label">Signal Source</div>
+        <div class="telemetry-value" id="pilotSignalSource">--</div>
+      </article>
+      <article class="telemetry-cell">
+        <div class="telemetry-label">Signal Match</div>
+        <div class="telemetry-value" id="pilotSignalCoverage">--</div>
+      </article>
+      <article class="telemetry-cell">
+        <div class="telemetry-label">Counter Start</div>
+        <div class="telemetry-value" id="pilotCounterStart">--</div>
+      </article>
+      <article class="telemetry-cell">
+        <div class="telemetry-label">Last Live Tick</div>
+        <div class="telemetry-value" id="pilotLastTick">--</div>
+      </article>
+    </section>
+
+    <section class="titlebar">
+      <div class="titlebar-left">
+        <span class="titlebar-tri" aria-hidden="true"></span>
+        <span class="titlebar-label">Market Context</span>
+      </div>
+      <span class="titlebar-meta">Momentum confluence · volume regime · breakout state</span>
+    </section>
+
+    <section class="two-col" aria-label="Market context and selector state">
+      <article class="col-panel">
+        <div class="col-inner">
+          <h2 class="col-title">Conditions<br /><em>behind the move.</em></h2>
+
+          <div class="ctx-list">
+            <div class="ctx-row">
+              <span class="ctx-key">Trend alignment</span>
+              <span class="context-val skel" id="trendAlignment"></span>
+            </div>
+            <div class="ctx-row">
+              <span class="ctx-key">Volume regime</span>
+              <span class="context-val skel" id="volumeRegime"></span>
+            </div>
+            <div class="ctx-row">
+              <span class="ctx-key">Breakout state</span>
+              <span class="context-val skel" id="breakoutState"></span>
+            </div>
+            <div class="ctx-row">
+              <span class="ctx-key">Signal pair</span>
+              <span class="context-val" id="pairNameContextMirror">WETH/USDC (Base)</span>
+            </div>
+            <div class="ctx-row">
+              <span class="ctx-key">Universe</span>
+              <span class="context-val">Base L2 · 10 protocols</span>
+            </div>
+          </div>
+
+          <div class="mom-grid">
+            <div class="mom-cell">
+              <div class="mom-tf">5m</div>
+              <div class="mom-val skel" id="mom5"></div>
+            </div>
+            <div class="mom-cell">
+              <div class="mom-tf">15m</div>
+              <div class="mom-val skel" id="mom15"></div>
+            </div>
+            <div class="mom-cell">
+              <div class="mom-tf">60m</div>
+              <div class="mom-val skel" id="mom60"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="col-panel cream">
+        <div class="col-inner">
+          <h2 class="col-title">The restraint<br /><em>delta, visible.</em></h2>
+
+          <div class="conf-wrap">
+            <div class="conf-head">
+              <span class="conf-label">Confidence</span>
+              <span class="conf-val" id="confidencePctWide">0.0%</span>
+            </div>
+            <div class="conf-track"><div class="conf-fill" id="confidenceFill" style="width: 0%"></div></div>
+          </div>
+
+          <div class="action-row">
+            <div class="action-cell">
+              <div class="action-lbl">Raw Action</div>
+              <div class="action-value sell" id="rawActionWide">SELL</div>
+            </div>
+            <div class="action-cell">
+              <div class="action-lbl">Vaara Action</div>
+              <div class="action-value sell" id="baseActionWide">SELL</div>
+            </div>
+          </div>
+          <div class="action-support app-only" id="actionSupport">Selector preserved prior position on low-conviction raw signal.</div>
+          <div class="action-support demo-only">Preview mode keeps logic terse. Private live surface shows full switch rationale.</div>
+        </div>
+      </article>
+    </section>
+
+    <section class="titlebar">
+      <div class="titlebar-left">
+        <span class="titlebar-tri" aria-hidden="true"></span>
+        <span class="titlebar-label">
+          {% if surface_mode == "demo" %}
+          Preview Curve - Last 120 Minutes (Delayed)
+          {% else %}
+          Raw vs Vaara Equity Curve - Last 120 Minutes
+          {% endif %}
+        </span>
+      </div>
+      <div class="chart-legend">
+        <div class="legend-item"><span class="legend-dash raw"></span>Raw Actions</div>
+        <div class="legend-item"><span class="legend-dash base"></span>Vaara Actions</div>
+      </div>
+    </section>
+
+    <section class="chart-body">
+      <canvas id="deltaChart" width="1200" height="220"></canvas>
+    </section>
+
+    <section class="titlebar" id="coverage">
+      <div class="titlebar-left">
+        <span class="titlebar-tri" aria-hidden="true"></span>
+        <span class="titlebar-label">Protocol Universe - Base Protocol Set (10)</span>
+      </div>
+      <span class="titlebar-meta">Fixed 9 + dynamic 90d TVL slot</span>
+    </section>
+
+    <section class="coverage-inner" aria-label="Protocol universe">
+      <div class="coverage-header">
+        <h2 class="coverage-title">Ten Base protocols.<br /><span class="coverage-title-sub"><em>One intelligence layer.</em></span></h2>
+        <div class="coverage-note">Fixed 9 + dynamic 90-day<br />highest TVL slot</div>
+      </div>
+      <div class="coverage-ribbon-wrap">
+        <div class="coverage-grid" id="coverageStrip"></div>
+      </div>
+    </section>
+  </main>
+
+  <section class="demo-cta-banner">
+    <div class="demo-cta-inner">
+      <div class="demo-cta-text">
+        <strong>This is the public preview.</strong> Full-fidelity data, unquantized endpoints, and integration support are available for pilot partners.
+      </div>
+      <a href="/pilot" class="demo-cta-btn">Request Pilot Access</a>
+    </div>
+  </section>
+
+  <footer class="app-footer">
+    <div class="footer-left">Vaara · Signal intelligence · Live on Base L2 · © 2026</div>
+    <div class="footer-links">
+      <a href="/about">Founder</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </div>
+    <div class="footer-right"><a href="/">base.vaara.io</a></div>
+  </footer>
+
+  <script src="/base-static/base.js?v={{ base_js_version or '20260319b' }}"></script>
+</body>
+</html>
