@@ -159,10 +159,7 @@ body.is-scrolled .topbar {
 }
 
 .topbar-nav {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  justify-self: end;
   display: flex;
   align-items: center;
   gap: 20px;

@@ -1,0 +1,1365 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vaara USDC Vault - Deposit on Base</title>
+  <meta name="description" content="Deposit USDC into the Vaara ML-driven vault on Morpho Base. The only ML-driven USDC curator on Base." />
+  <meta property="og:title" content="Vaara USDC Vault" />
+  <meta property="og:description" content="ML-driven USDC vault on Morpho Base. Deposit and let the engine allocate." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://base.vaara.io/vault" />
+  <meta property="og:image" content="https://base.vaara.io/base-static/brand/og-preview.png?v=20260329" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Vaara USDC Vault" />
+  <meta name="twitter:description" content="ML-driven USDC vault on Morpho Base. Deposit and let the engine allocate." />
+  <meta name="twitter:image" content="https://base.vaara.io/base-static/brand/og-preview.png?v=20260329" />
+  <link rel="canonical" href="https://base.vaara.io/vault" />
+  <link rel="icon" type="image/svg+xml" href="/base-static/brand/vaara-favicon.svg?v=20260320a" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/base-static/brand/vaara-favicon-32.png?v=20260320a" />
+  <link rel="shortcut icon" href="/base-static/brand/favicon.ico?v=20260320a" />
+  <link rel="stylesheet" href="/base-static/fonts/fonts.css?v=20260310c" />
+  <link rel="stylesheet" href="/base-static/landing.css?v=20260326b" />
+  <style>
+    body[data-page="vault"] {
+      background: var(--warm-white);
+    }
+
+    .vault-hero {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .vault-hero .hero-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 48%;
+      filter: saturate(0.75) brightness(0.72);
+    }
+
+    .vault-hero .hero-vignette {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,10,10,0.55) 0%,
+        rgba(10,10,10,0.25) 30%,
+        rgba(10,10,10,0.22) 55%,
+        rgba(10,10,10,0.72) 100%
+      );
+      z-index: 1;
+    }
+
+    .vault-hero-inner {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-top: calc(52px + env(safe-area-inset-top, 0px));
+    }
+
+    .vault-hero-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 48px;
+    }
+
+    .vault-hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: "Syne", "Manrope", sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 20px;
+      animation: fadeUp 0.8s 0.2s ease forwards;
+      opacity: 0;
+    }
+
+    .vault-hero-eyebrow::before {
+      content: "";
+      width: 18px;
+      height: 1px;
+      background: rgba(255,255,255,0.4);
+    }
+
+    .vault-hero-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--warm-white);
+      margin-bottom: 14px;
+      animation: fadeUp 0.8s 0.4s ease forwards;
+      opacity: 0;
+    }
+
+    .vault-hero-title em {
+      font-style: italic;
+      color: var(--brand-logo-accent);
+    }
+
+    .vault-hero-sub {
+      font-size: 16px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.55);
+      max-width: 520px;
+      line-height: 1.7;
+      animation: fadeUp 0.8s 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    .vault-stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-top: 1px solid rgba(255,255,255,0.12);
+      background: rgba(10,10,10,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      margin-top: auto;
+      animation: fadeUp 0.6s 0.7s ease forwards;
+      opacity: 0;
+    }
+
+    .vault-stat {
+      padding: 24px 32px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .vault-stat:last-child { border-right: 0; }
+
+    .vault-stat-label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.42);
+      margin-bottom: 8px;
+    }
+
+    .vault-stat-value {
+      font-family: "Manrope", "DM Sans", sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--warm-white);
+      letter-spacing: 0.01em;
+    }
+
+    .vault-stat-value.accent { color: #6aaf88; }
+
+    .vault-stat-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.46);
+      margin-top: 4px;
+    }
+
+    /* Deposit/Withdraw panel */
+    .vault-body {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 0;
+      min-height: 480px;
+    }
+
+    .vault-info {
+      padding: 28px 48px 48px;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+
+
+    .vault-info-title {
+      font-family: "Playfair Display", serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0;
+      margin-top: 0;
+      line-height: 1.15;
+    }
+
+    .vault-info-title em {
+      font-style: italic;
+      color: var(--brand-logo-accent);
+    }
+
+    .vault-info-body {
+      font-size: 14.5px;
+      color: var(--ink-mid);
+      line-height: 1.7;
+      max-width: 480px;
+      margin-bottom: 32px;
+    }
+
+    .vault-detail-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .vault-detail-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13.5px;
+    }
+
+    .vault-detail-list li:first-child {
+      border-top: 1px solid var(--border);
+    }
+
+    .vault-detail-key {
+      color: var(--ink-light);
+      font-weight: 400;
+    }
+
+    .vault-detail-val {
+      color: var(--ink);
+      font-weight: 600;
+      font-family: "Manrope", "DM Sans", sans-serif;
+      text-align: right;
+    }
+
+    .vault-detail-val a {
+      color: var(--green);
+      border-bottom: 1px solid rgba(45,90,61,0.25);
+    }
+
+    /* View switcher */
+
+    .vault-view-nav {
+      position: absolute;
+      top: 28px;
+      right: 48px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .vault-view-indicator {
+      font-family: "Syne", "Manrope", sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-right: 2px;
+    }
+
+    .vault-view-arrow {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--ink-light);
+      font-size: 18px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .vault-view-arrow:hover {
+      border-color: var(--border-strong);
+      color: var(--ink);
+    }
+
+    .vault-info-view {
+      display: none;
+      animation: fadeUp 0.3s ease;
+    }
+
+    .vault-info-view.active {
+      display: block;
+    }
+
+    .vault-market-type-tag {
+      display: inline-block;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 1px 6px;
+      border-radius: 2px;
+      background: rgba(120,160,138,0.12);
+      color: var(--green);
+      margin-left: 6px;
+    }
+
+    .vault-panel {
+      background: var(--cream);
+      padding: 36px 36px 48px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .vault-form-hidden {
+      display: none !important;
+    }
+
+    .vault-panel-title {
+      font-family: "Syne", "Manrope", sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .vault-panel-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      max-width: 60px;
+    }
+
+    .vault-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 28px;
+      border: 1px solid var(--border-strong);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .vault-tab {
+      flex: 1;
+      padding: 10px 0;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: var(--ink-light);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .vault-tab.active {
+      background: var(--ink);
+      color: var(--warm-white);
+    }
+
+    .vault-tab:not(.active):hover {
+      background: rgba(0,0,0,0.04);
+    }
+
+    .vault-balance-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .vault-balance-label {
+      font-size: 11px;
+      color: var(--ink-light);
+      letter-spacing: 0.06em;
+    }
+
+    .vault-balance-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .vault-input-wrap {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .vault-input {
+      width: 100%;
+      padding: 16px 70px 16px 16px;
+      font-size: 20px;
+      font-weight: 600;
+      font-family: "Manrope", "DM Sans", sans-serif;
+      border: 1px solid var(--border-strong);
+      border-radius: 4px;
+      background: var(--warm-white);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .vault-input:focus {
+      border-color: var(--brand-logo-accent);
+    }
+
+    .vault-input-suffix {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-light);
+      letter-spacing: 0.04em;
+    }
+
+    .vault-max-btn {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--brand-logo-accent);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+
+    .vault-max-btn:hover {
+      color: var(--green);
+    }
+
+    .vault-preview {
+      padding: 14px 0;
+      border-top: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+
+    .vault-preview-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      color: var(--ink-mid);
+      padding: 4px 0;
+    }
+
+    .vault-preview-val {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .vault-action-btn {
+      width: 100%;
+      padding: 16px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      background: var(--ink);
+      color: var(--warm-white);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.15s, opacity 0.15s;
+    }
+
+    .vault-action-btn:hover { background: var(--ink-emphasis); }
+    .vault-action-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .vault-action-btn.connecting {
+      background: var(--ink-mid);
+    }
+
+    .vault-action-btn.success {
+      background: var(--green);
+    }
+
+    .vault-action-btn.error {
+      background: #8b3a3a;
+    }
+
+    .vault-status {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--ink-light);
+      text-align: center;
+      min-height: 18px;
+      word-break: break-all;
+    }
+
+    .vault-status a {
+      color: var(--green);
+      border-bottom: 1px solid rgba(45,90,61,0.25);
+    }
+
+    .vault-your-position {
+      margin-top: auto;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .vault-position-label {
+      font-size: 9px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 6px;
+    }
+
+    .vault-position-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      font-family: "Manrope", "DM Sans", sans-serif;
+    }
+
+    .vault-position-shares {
+      font-size: 11px;
+      color: var(--ink-light);
+      margin-top: 2px;
+    }
+
+    /* Markets marquee */
+    .vault-markets {
+      background: var(--warm-white);
+      margin-top: 56px;
+      padding: 0 0 40px;
+      overflow: hidden;
+    }
+
+    .vault-footer-gap {
+      height: 56px;
+      background: var(--warm-white);
+    }
+
+    body[data-page="vault"] .footer-main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    body[data-page="vault"] .footer-left {
+      position: absolute;
+      left: 48px;
+    }
+
+    body[data-page="vault"] .footer-right {
+      position: absolute;
+      right: 48px;
+    }
+
+    body[data-page="vault"] .footer-links {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 20px;
+    }
+
+    body[data-page="vault"] .footer-links a:first-child {
+      text-align: right;
+    }
+
+    body[data-page="vault"] .footer-links a:last-child {
+      text-align: left;
+    }
+
+    .vault-markets-label {
+      font-family: "Syne", "Manrope", sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      padding: 18px 48px 0;
+    }
+
+    .vault-marquee-wrap {
+      position: relative;
+      overflow: hidden;
+      padding: 14px 0 18px;
+    }
+
+    .vault-marquee-track {
+      display: flex;
+      width: max-content;
+      animation: vault-roll 96s linear infinite;
+    }
+
+    .vault-marquee-group {
+      display: flex;
+      gap: 0;
+      flex-shrink: 0;
+    }
+
+    .vault-market-card {
+      flex: 0 0 300px;
+      min-height: 174px;
+      padding: 18px 16px 16px;
+      background: #0b0b0c;
+      border-right: 1px solid #1b1b1d;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .vault-market-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .vault-market-pair {
+      font-family: "IBM Plex Sans", "DM Sans", sans-serif;
+      font-size: 13px;
+      color: #e7ecf2;
+      font-weight: 500;
+    }
+
+    .vault-market-badge {
+      display: inline-block;
+      font-size: 8px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 2px;
+      background: #232b35;
+      color: #9ca7b4;
+    }
+
+    .vault-market-badge.badge-core {
+      background: #15352a;
+      color: #7fd5a5;
+    }
+
+    .vault-market-desc {
+      font-family: "Manrope", "DM Sans", sans-serif;
+      font-size: 10px;
+      color: #95a0ae;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .vault-market-lltv {
+      font-family: "Manrope", "DM Sans", sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: #eaf2fb;
+      text-shadow: 0 0 10px rgba(203,226,247,0.14);
+      margin-top: auto;
+    }
+
+    .vault-market-status {
+      font-family: "Manrope", "DM Sans", sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: #7fd5a5;
+      margin-top: 6px;
+    }
+
+    @keyframes vault-roll {
+      from { transform: translate3d(0,0,0); }
+      to { transform: translate3d(-50%,0,0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .vault-body {
+        grid-template-columns: 1fr;
+      }
+      .vault-info {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 48px 24px;
+      }
+      .vault-panel {
+        padding: 36px 24px;
+      }
+      .vault-stats-bar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .vault-stat {
+        padding: 18px 20px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .vault-hero {
+        min-height: 100svh;
+        min-height: 100dvh;
+      }
+      .vault-hero-inner {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      .vault-stats-bar {
+        grid-template-columns: 1fr;
+      }
+      .vault-stat {
+        border-right: 0;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        padding: 16px;
+      }
+      .vault-stat:last-child { border-bottom: 0; }
+      .vault-info {
+        padding: 32px 16px;
+      }
+      .vault-panel {
+        padding: 28px 16px;
+      }
+      .vault-markets-label {
+        padding-left: 16px;
+      }
+    }
+  </style>
+</head>
+<body data-page="vault">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand-head" href="https://vaara.io/" aria-label="Open Vaara landing page">
+        <span class="brand-icon" aria-hidden="true"><span class="brand-tri"></span></span>
+        <span class="brand-kicker">Vaara</span>
+      </a>
+      <ul class="topbar-nav" aria-label="Primary navigation">
+        <li><span class="nav-live"><span class="live-dot"></span> Live</span></li>
+        <li><a href="/demo">Demo</a></li>
+        <li><a href="/vault">Vault</a></li>
+        <li><a href="/pilot" class="cta">Request Pilot</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <section class="vault-hero">
+    <img class="hero-photo" src="/base-static/images/landing-hero.jpg" alt="Vaara landscape" />
+    <div class="hero-vignette"></div>
+    <div class="vault-hero-inner">
+      <div class="vault-hero-text">
+        <div class="vault-hero-eyebrow">Morpho Vault on Base · ML-Driven · Live</div>
+        <h1 class="vault-hero-title">Deposit USDC.<br /><em>Let the engine allocate.</em></h1>
+        <p class="vault-hero-sub">The only ML-driven USDC vault curator on Base. Ensemble signals decide when to act and when to sit out. 13 markets. Autonomous rebalancing. 10% performance fee, zero management fee.</p>
+      </div>
+      <div class="vault-stats-bar">
+        <article class="vault-stat">
+          <div class="vault-stat-label">Total Deposits</div>
+          <div class="vault-stat-value" id="vaultTvl">--</div>
+          <div class="vault-stat-sub">USDC in vault</div>
+        </article>
+        <article class="vault-stat">
+          <div class="vault-stat-label">Net APY</div>
+          <div class="vault-stat-value accent" id="vaultApy">--</div>
+          <div class="vault-stat-sub">After 10% perf fee</div>
+        </article>
+        <article class="vault-stat">
+          <div class="vault-stat-label">Markets</div>
+          <div class="vault-stat-value">13</div>
+          <div class="vault-stat-sub">Active allocations</div>
+        </article>
+        <article class="vault-stat">
+          <div class="vault-stat-label">Curator</div>
+          <div class="vault-stat-value">ML Engine</div>
+          <div class="vault-stat-sub">Autonomous, V6 pipeline</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <main class="vault-body">
+    <div class="vault-info">
+      <div class="vault-view-nav">
+        <button class="vault-view-arrow vault-view-prev" onclick="switchInfoView(-1)" aria-label="Previous view">&#8249;</button>
+        <span class="vault-view-indicator" id="viewIndicator">1 / 2</span>
+        <button class="vault-view-arrow vault-view-next" onclick="switchInfoView(1)" aria-label="Next view">&#8250;</button>
+      </div>
+
+      <!-- View 1: Vault details -->
+      <div class="vault-info-view active" id="viewDetails">
+        <h2 class="vault-info-title">How it works.<br /><em>No black box.</em></h2>
+        <p class="vault-info-body">Your USDC goes into a Morpho MetaMorpho vault. The Vaara ML engine continuously evaluates market conditions and rebalances allocations across 13 lending markets on Base. When conditions are dangerous, the engine pulls back. When they're safe, it leans in. You earn lending yield, improved by smarter allocation timing.</p>
+
+        <ul class="vault-detail-list">
+          <li>
+            <span class="vault-detail-key">Vault contract</span>
+            <span class="vault-detail-val"><a href="https://basescan.org/address/0xD2540BDCD2C14B618456B9fAeEbd3F57d808cDA6" target="_blank" rel="noopener">0xD254...cDA6</a></span>
+          </li>
+          <li>
+            <span class="vault-detail-key">Asset</span>
+            <span class="vault-detail-val">USDC</span>
+          </li>
+          <li>
+            <span class="vault-detail-key">Network</span>
+            <span class="vault-detail-val">Base</span>
+          </li>
+          <li>
+            <span class="vault-detail-key">Performance fee</span>
+            <span class="vault-detail-val">10%</span>
+          </li>
+          <li>
+            <span class="vault-detail-key">Management fee</span>
+            <span class="vault-detail-val">0%</span>
+          </li>
+          <li>
+            <span class="vault-detail-key">Timelock</span>
+            <span class="vault-detail-val">3 days</span>
+          </li>
+          <li>
+            <span class="vault-detail-key">Rebalance frequency</span>
+            <span class="vault-detail-val">~15 min</span>
+          </li>
+          <li>
+            <span class="vault-detail-key">On-chain</span>
+            <span class="vault-detail-val"><a href="https://basescan.org/address/0xD2540BDCD2C14B618456B9fAeEbd3F57d808cDA6" target="_blank" rel="noopener">View on BaseScan</a></span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- View 2: Markets list -->
+      <div class="vault-info-view" id="viewMarkets">
+        <h2 class="vault-info-title">13 markets.<br /><em>Live allocations.</em></h2>
+        <p class="vault-info-body">The ML engine distributes deposits across these Morpho lending markets on Base, shifting weight based on real-time risk signals.</p>
+
+        <ul class="vault-detail-list" id="marketsList"></ul>
+      </div>
+    </div>
+
+    <div class="vault-panel">
+      <div class="vault-panel-title">Vault action</div>
+
+      <div class="vault-tabs">
+        <button class="vault-tab active" data-tab="deposit" onclick="switchTab('deposit')">Deposit</button>
+        <button class="vault-tab" data-tab="withdraw" onclick="switchTab('withdraw')">Withdraw</button>
+      </div>
+
+      <!-- Not connected state -->
+      <div id="connectPrompt">
+        <button class="vault-action-btn" id="connectBtn" onclick="connectWallet()">Connect Wallet</button>
+        <div class="vault-status" id="connectStatus"></div>
+      </div>
+
+      <!-- Deposit form -->
+      <div id="depositForm" class="vault-form-hidden">
+        <div class="vault-balance-row">
+          <span class="vault-balance-label">Your USDC balance</span>
+          <span class="vault-balance-value" id="usdcBalance">--</span>
+        </div>
+        <div class="vault-input-wrap">
+          <input type="text" class="vault-input" id="depositAmount" placeholder="0.00" inputmode="decimal" autocomplete="off" />
+          <span class="vault-input-suffix">USDC</span>
+        </div>
+        <button class="vault-max-btn" onclick="setMax('deposit')">MAX</button>
+
+        <div class="vault-preview" id="depositPreview" style="display:none;">
+          <div class="vault-preview-row">
+            <span>You deposit</span>
+            <span class="vault-preview-val" id="previewDepositAmt">--</span>
+          </div>
+          <div class="vault-preview-row">
+            <span>You receive</span>
+            <span class="vault-preview-val" id="previewShares">-- shares</span>
+          </div>
+        </div>
+
+        <button class="vault-action-btn" id="depositBtn" onclick="doDeposit()" disabled>Enter amount</button>
+        <div class="vault-status" id="depositStatus"></div>
+
+        <div class="vault-your-position">
+          <div class="vault-position-label">Your position</div>
+          <div class="vault-position-value" id="positionValue">--</div>
+          <div class="vault-position-shares" id="positionShares"></div>
+        </div>
+      </div>
+
+      <!-- Withdraw form -->
+      <div id="withdrawForm" class="vault-form-hidden">
+        <div class="vault-balance-row">
+          <span class="vault-balance-label">Your vault position</span>
+          <span class="vault-balance-value" id="withdrawableUsdc">--</span>
+        </div>
+        <div class="vault-input-wrap">
+          <input type="text" class="vault-input" id="withdrawAmount" placeholder="0.00" inputmode="decimal" autocomplete="off" />
+          <span class="vault-input-suffix">USDC</span>
+        </div>
+        <button class="vault-max-btn" onclick="setMax('withdraw')">MAX</button>
+
+        <div class="vault-preview" id="withdrawPreview" style="display:none;">
+          <div class="vault-preview-row">
+            <span>You withdraw</span>
+            <span class="vault-preview-val" id="previewWithdrawAmt">--</span>
+          </div>
+        </div>
+
+        <button class="vault-action-btn" id="withdrawBtn" onclick="doWithdraw()" disabled>Enter amount</button>
+        <div class="vault-status" id="withdrawStatus"></div>
+
+        <div class="vault-your-position">
+          <div class="vault-position-label">Your position</div>
+          <div class="vault-position-value" id="positionValueW">--</div>
+          <div class="vault-position-shares" id="positionSharesW"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Markets marquee -->
+  <section class="vault-markets">
+    <div class="vault-markets-label">Enabled markets (13)</div>
+    <div class="vault-marquee-wrap">
+      <div class="vault-marquee-track" id="marketsTrack">
+        <div class="vault-marquee-group" id="marketsGroup1"></div>
+        <div class="vault-marquee-group" id="marketsGroup2"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="vault-footer-gap"></div>
+
+  <footer class="footer-main">
+    <div class="footer-left">Vaara · ML-driven vault curator · Live on Base · &copy; 2026</div>
+    <div class="footer-links">
+      <a href="/about">Founder</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </div>
+    <div class="footer-right">hello@vaara.io</div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js" crossorigin="anonymous"></script>
+  <script>
+    /* ── Constants ── */
+    const VAULT = "0xD2540BDCD2C14B618456B9fAeEbd3F57d808cDA6";
+    const USDC  = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
+    const BASE_CHAIN_ID = 8453;
+    const BASE_CHAIN_HEX = "0x2105";
+    const GRAPHQL = "https://blue-api.morpho.org/graphql";
+
+    const VAULT_ABI = [
+      "function deposit(uint256 assets, address receiver) returns (uint256 shares)",
+      "function withdraw(uint256 assets, address receiver, address owner) returns (uint256 shares)",
+      "function redeem(uint256 shares, address receiver, address owner) returns (uint256 assets)",
+      "function totalAssets() view returns (uint256)",
+      "function maxDeposit(address) view returns (uint256)",
+      "function maxWithdraw(address owner) view returns (uint256)",
+      "function maxRedeem(address owner) view returns (uint256)",
+      "function convertToShares(uint256 assets) view returns (uint256)",
+      "function convertToAssets(uint256 shares) view returns (uint256)",
+      "function previewDeposit(uint256 assets) view returns (uint256)",
+      "function previewRedeem(uint256 shares) view returns (uint256)",
+      "function balanceOf(address owner) view returns (uint256)",
+      "function decimals() view returns (uint8)",
+      "function name() view returns (string)",
+      "function symbol() view returns (string)"
+    ];
+
+    const ERC20_ABI = [
+      "function approve(address spender, uint256 amount) returns (bool)",
+      "function allowance(address owner, address spender) view returns (uint256)",
+      "function balanceOf(address owner) view returns (uint256)",
+      "function decimals() view returns (uint8)"
+    ];
+
+    const MARKETS = [
+      { pair: "WETH / USDC", lltv: "86%", type: "Core" },
+      { pair: "cbETH / USDC", lltv: "86%", type: "Core" },
+      { pair: "cbETH / USDC", lltv: "77%", type: "Core" },
+      { pair: "wstETH / USDC", lltv: "86%", type: "Core" },
+      { pair: "cbBTC / USDC", lltv: "86%", type: "Core" },
+      { pair: "cbXRP / USDC", lltv: "62.5%", type: "CB Wrapped" },
+      { pair: "cbXRP / USDC", lltv: "77%", type: "CB Wrapped" },
+      { pair: "cbDOGE / USDC", lltv: "62.5%", type: "CB Wrapped" },
+      { pair: "cbADA / USDC", lltv: "62.5%", type: "CB Wrapped" },
+      { pair: "cbADA / USDC", lltv: "77%", type: "CB Wrapped" },
+      { pair: "cbLTC / USDC", lltv: "62.5%", type: "CB Wrapped" },
+      { pair: "weETH / USDC", lltv: "77%", type: "LST" },
+      { pair: "uniBTC / USDC", lltv: "77%", type: "Additional" }
+    ];
+
+    const VIEW_LABELS = ["Vault Details", "Markets"];
+    let currentView = 0;
+
+    function switchInfoView(dir) {
+      currentView = (currentView + dir + VIEW_LABELS.length) % VIEW_LABELS.length;
+      document.getElementById("viewIndicator").textContent = (currentView + 1) + " / " + VIEW_LABELS.length;
+      document.getElementById("viewDetails").classList.toggle("active", currentView === 0);
+      document.getElementById("viewMarkets").classList.toggle("active", currentView === 1);
+    }
+
+    function buildMarketList() {
+      const list = document.getElementById("marketsList");
+      list.innerHTML = MARKETS.map(m =>
+        `<li>
+          <span class="vault-detail-key">${m.pair}<span class="vault-market-type-tag">${m.type}</span></span>
+          <span class="vault-detail-val">LLTV ${m.lltv}</span>
+        </li>`
+      ).join("");
+    }
+    buildMarketList();
+
+    let provider = null;
+    let signer = null;
+    let userAddr = null;
+    let currentTab = "deposit";
+    let userShares = 0n;
+    let userUsdcBal = 0n;
+    let vaultDecimals = 18;
+
+    /* ── Markets marquee ── */
+    function buildMarquee() {
+      const html = MARKETS.map(m => {
+        const badgeClass = m.type === "Core" ? "vault-market-badge badge-core" : "vault-market-badge";
+        return `<div class="vault-market-card">
+          <div class="vault-market-top">
+            <div class="vault-market-pair">${m.pair}</div>
+            <span class="${badgeClass}">${m.type}</span>
+          </div>
+          <div class="vault-market-desc">Morpho Blue · Base · USDC lending</div>
+          <div class="vault-market-lltv">LLTV ${m.lltv}</div>
+          <div class="vault-market-status">● Enabled</div>
+        </div>`;
+      }).join("");
+      document.getElementById("marketsGroup1").innerHTML = html;
+      document.getElementById("marketsGroup2").innerHTML = html;
+    }
+    buildMarquee();
+
+    /* ── Fetch vault stats from Morpho GraphQL ── */
+    async function fetchVaultStats() {
+      try {
+        const q = `{ vaultByAddress(address: "${VAULT}", chainId: ${BASE_CHAIN_ID}) { state { totalAssetsUsd apy netApy } } }`;
+        const resp = await fetch(GRAPHQL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: q })
+        });
+        const data = await resp.json();
+        const v = data?.data?.vaultByAddress;
+        if (v) {
+          const tvl = v.state?.totalAssetsUsd;
+          const apy = v.state?.netApy;
+          if (tvl != null) {
+            document.getElementById("vaultTvl").textContent =
+              tvl >= 1e6 ? "$" + (tvl/1e6).toFixed(2) + "M" :
+              tvl >= 1e3 ? "$" + (tvl/1e3).toFixed(1) + "K" :
+              "$" + tvl.toFixed(2);
+          }
+          if (apy != null) {
+            document.getElementById("vaultApy").textContent = (apy * 100).toFixed(2) + "%";
+          }
+        }
+      } catch(e) {
+        console.warn("GraphQL fetch failed:", e);
+      }
+    }
+    fetchVaultStats();
+    setInterval(fetchVaultStats, 60000);
+
+    /* ── Tab switching ── */
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll(".vault-tab").forEach(t => {
+        t.classList.toggle("active", t.dataset.tab === tab);
+      });
+      if (!userAddr) return;
+      document.getElementById("depositForm").classList.toggle("vault-form-hidden", tab !== "deposit");
+      document.getElementById("withdrawForm").classList.toggle("vault-form-hidden", tab !== "withdraw");
+    }
+
+    /* ── Connect wallet ── */
+    async function connectWallet() {
+      const btn = document.getElementById("connectBtn");
+      const status = document.getElementById("connectStatus");
+
+      if (!window.ethereum) {
+        status.textContent = "No wallet detected. Install MetaMask or Coinbase Wallet.";
+        return;
+      }
+
+      btn.textContent = "Connecting...";
+      btn.classList.add("connecting");
+      btn.disabled = true;
+
+      try {
+        /* Find the right provider — prefer MetaMask or Coinbase Wallet */
+        let ethereum = window.ethereum;
+        if (ethereum.providers && ethereum.providers.length) {
+          const mm = ethereum.providers.find(p => p.isMetaMask);
+          const cb = ethereum.providers.find(p => p.isCoinbaseWallet);
+          ethereum = mm || cb || ethereum.providers[0];
+        }
+
+        provider = new ethers.BrowserProvider(ethereum);
+
+        /* Try to switch to Base — skip if wallet doesn't support it */
+        try {
+          await provider.send("wallet_switchEthereumChain", [{ chainId: BASE_CHAIN_HEX }]);
+        } catch (switchErr) {
+          if (switchErr.code === 4902) {
+            await provider.send("wallet_addEthereumChain", [{
+              chainId: BASE_CHAIN_HEX,
+              chainName: "Base",
+              nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
+              rpcUrls: ["https://mainnet.base.org"],
+              blockExplorerUrls: ["https://basescan.org"]
+            }]);
+          }
+          /* If unsupported method, just continue — user must be on Base manually */
+        }
+
+        signer = await provider.getSigner();
+        userAddr = await signer.getAddress();
+
+        document.getElementById("connectPrompt").classList.add("vault-form-hidden");
+        switchTab(currentTab);
+
+        await refreshBalances();
+        setupInputListeners();
+
+      } catch(e) {
+        btn.textContent = "Connect Wallet";
+        btn.classList.remove("connecting");
+        btn.disabled = false;
+        status.textContent = e.message || "Connection failed";
+      }
+    }
+
+    /* ── Refresh balances ── */
+    async function refreshBalances() {
+      if (!signer) return;
+      const usdc = new ethers.Contract(USDC, ERC20_ABI, signer);
+      const vault = new ethers.Contract(VAULT, VAULT_ABI, signer);
+
+      const [bal, shares, dec] = await Promise.all([
+        usdc.balanceOf(userAddr),
+        vault.balanceOf(userAddr),
+        vault.decimals()
+      ]);
+
+      userUsdcBal = bal;
+      userShares = shares;
+      vaultDecimals = Number(dec);
+
+      const usdcFmt = ethers.formatUnits(bal, 6);
+      document.getElementById("usdcBalance").textContent = parseFloat(usdcFmt).toFixed(2) + " USDC";
+
+      let posUsdcVal = "--";
+      if (shares > 0n) {
+        const assets = await vault.convertToAssets(shares);
+        posUsdcVal = parseFloat(ethers.formatUnits(assets, 6)).toFixed(2) + " USDC";
+        document.getElementById("withdrawableUsdc").textContent = posUsdcVal;
+      } else {
+        document.getElementById("withdrawableUsdc").textContent = "0.00 USDC";
+      }
+
+      const sharesFmt = ethers.formatUnits(shares, vaultDecimals);
+
+      ["positionValue", "positionValueW"].forEach(id => {
+        document.getElementById(id).textContent = posUsdcVal;
+      });
+      ["positionShares", "positionSharesW"].forEach(id => {
+        document.getElementById(id).textContent = parseFloat(sharesFmt).toFixed(4) + " shares";
+      });
+    }
+
+    /* ── Input listeners ── */
+    function setupInputListeners() {
+      const depInput = document.getElementById("depositAmount");
+      const witInput = document.getElementById("withdrawAmount");
+
+      depInput.addEventListener("input", async () => {
+        const val = depInput.value.trim();
+        const btn = document.getElementById("depositBtn");
+        const preview = document.getElementById("depositPreview");
+
+        if (!val || isNaN(val) || parseFloat(val) <= 0) {
+          btn.textContent = "Enter amount";
+          btn.disabled = true;
+          preview.style.display = "none";
+          return;
+        }
+
+        const amount = ethers.parseUnits(val, 6);
+        if (amount > userUsdcBal) {
+          btn.textContent = "Insufficient USDC";
+          btn.disabled = true;
+          preview.style.display = "none";
+          return;
+        }
+
+        try {
+          const vault = new ethers.Contract(VAULT, VAULT_ABI, provider);
+          const shares = await vault.previewDeposit(amount);
+          document.getElementById("previewDepositAmt").textContent = parseFloat(val).toFixed(2) + " USDC";
+          document.getElementById("previewShares").textContent = parseFloat(ethers.formatUnits(shares, vaultDecimals)).toFixed(4) + " shares";
+          preview.style.display = "block";
+        } catch(e) {
+          preview.style.display = "none";
+        }
+
+        btn.textContent = "Deposit USDC";
+        btn.disabled = false;
+      });
+
+      witInput.addEventListener("input", () => {
+        const val = witInput.value.trim();
+        const btn = document.getElementById("withdrawBtn");
+        const preview = document.getElementById("withdrawPreview");
+
+        if (!val || isNaN(val) || parseFloat(val) <= 0) {
+          btn.textContent = "Enter amount";
+          btn.disabled = true;
+          preview.style.display = "none";
+          return;
+        }
+
+        document.getElementById("previewWithdrawAmt").textContent = parseFloat(val).toFixed(2) + " USDC";
+        preview.style.display = "block";
+        btn.textContent = "Withdraw USDC";
+        btn.disabled = false;
+      });
+    }
+
+    /* ── Max button ── */
+    function setMax(tab) {
+      if (tab === "deposit") {
+        document.getElementById("depositAmount").value = ethers.formatUnits(userUsdcBal, 6);
+        document.getElementById("depositAmount").dispatchEvent(new Event("input"));
+      } else {
+        if (userShares > 0n) {
+          const vault = new ethers.Contract(VAULT, VAULT_ABI, provider);
+          vault.maxRedeem(userAddr).then(maxShares => {
+            const shares = maxShares < userShares ? maxShares : userShares;
+            return vault.convertToAssets(shares);
+          }).then(assets => {
+            document.getElementById("withdrawAmount").value = ethers.formatUnits(assets, 6);
+            document.getElementById("withdrawAmount").dispatchEvent(new Event("input"));
+          });
+        }
+      }
+    }
+
+    /* ── Deposit ── */
+    async function doDeposit() {
+      const btn = document.getElementById("depositBtn");
+      const status = document.getElementById("depositStatus");
+      const val = document.getElementById("depositAmount").value.trim();
+      const amount = ethers.parseUnits(val, 6);
+
+      btn.disabled = true;
+
+      try {
+        const usdc = new ethers.Contract(USDC, ERC20_ABI, signer);
+        const vault = new ethers.Contract(VAULT, VAULT_ABI, signer);
+
+        /* Check allowance */
+        const allowance = await usdc.allowance(userAddr, VAULT);
+        if (allowance < amount) {
+          btn.textContent = "Approving USDC...";
+          status.textContent = "Sign the approval transaction in your wallet.";
+          const approveTx = await usdc.approve(VAULT, amount);
+          status.innerHTML = 'Approval pending... <a href="https://basescan.org/tx/' + approveTx.hash + '" target="_blank">View TX</a>';
+          await approveTx.wait();
+        }
+
+        /* Deposit */
+        btn.textContent = "Depositing...";
+        status.textContent = "Sign the deposit transaction in your wallet.";
+        const depositTx = await vault.deposit(amount, userAddr);
+        status.innerHTML = 'Deposit pending... <a href="https://basescan.org/tx/' + depositTx.hash + '" target="_blank">View TX</a>';
+        await depositTx.wait();
+
+        btn.textContent = "Deposited!";
+        btn.classList.add("success");
+        status.innerHTML = 'Deposit confirmed. <a href="https://basescan.org/tx/' + depositTx.hash + '" target="_blank">View on BaseScan</a>';
+
+        document.getElementById("depositAmount").value = "";
+        document.getElementById("depositPreview").style.display = "none";
+        await refreshBalances();
+
+        setTimeout(() => {
+          btn.classList.remove("success");
+          btn.textContent = "Enter amount";
+        }, 3000);
+
+      } catch(e) {
+        btn.textContent = "Deposit USDC";
+        btn.classList.add("error");
+        status.textContent = e.reason || e.message || "Transaction failed";
+        btn.disabled = false;
+        setTimeout(() => btn.classList.remove("error"), 3000);
+      }
+    }
+
+    /* ── Withdraw ── */
+    async function doWithdraw() {
+      const btn = document.getElementById("withdrawBtn");
+      const status = document.getElementById("withdrawStatus");
+      const val = document.getElementById("withdrawAmount").value.trim();
+
+      btn.disabled = true;
+
+      try {
+        const vault = new ethers.Contract(VAULT, VAULT_ABI, signer);
+        const requestedAmount = ethers.parseUnits(val, 6);
+
+        /* Always use redeem (share-based) to avoid overflow in MetaMorpho's
+           withdraw rounding math. Convert USDC → shares first. */
+        let sharesToRedeem;
+        const maxRedeemable = await vault.maxRedeem(userAddr);
+
+        if (requestedAmount >= await vault.convertToAssets(userShares) || userShares <= maxRedeemable) {
+          /* Full exit or amount covers whole position */
+          const neededShares = await vault.convertToShares(requestedAmount);
+          sharesToRedeem = neededShares > userShares ? userShares : neededShares;
+          /* Add 1 wei of shares to cover rounding dust */
+          if (sharesToRedeem < userShares) {
+            sharesToRedeem = sharesToRedeem + 1n;
+            if (sharesToRedeem > userShares) sharesToRedeem = userShares;
+          }
+        } else {
+          sharesToRedeem = maxRedeemable;
+        }
+
+        if (sharesToRedeem <= 0n) {
+          throw new Error("No shares available to redeem");
+        }
+
+        let tx;
+        btn.textContent = "Redeeming...";
+        status.textContent = "Sign the redeem transaction in your wallet.";
+        tx = await vault.redeem(sharesToRedeem, userAddr, userAddr);
+
+        status.innerHTML = 'Withdrawal pending... <a href="https://basescan.org/tx/' + tx.hash + '" target="_blank">View TX</a>';
+        await tx.wait();
+
+        btn.textContent = "Withdrawn!";
+        btn.classList.add("success");
+        status.innerHTML = 'Withdrawal confirmed. <a href="https://basescan.org/tx/' + tx.hash + '" target="_blank">View on BaseScan</a>';
+
+        document.getElementById("withdrawAmount").value = "";
+        document.getElementById("withdrawPreview").style.display = "none";
+        await refreshBalances();
+
+        setTimeout(() => {
+          btn.classList.remove("success");
+          btn.textContent = "Enter amount";
+        }, 3000);
+
+      } catch(e) {
+        btn.textContent = "Withdraw USDC";
+        btn.classList.add("error");
+        status.textContent = e.reason || e.message || "Transaction failed";
+        btn.disabled = false;
+        setTimeout(() => btn.classList.remove("error"), 3000);
+      }
+    }
+
+    /* ── Listen for account/chain changes ── */
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", () => location.reload());
+      window.ethereum.on("chainChanged", () => location.reload());
+    }
+  </script>
+</body>
+</html>

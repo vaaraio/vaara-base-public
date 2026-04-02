@@ -801,7 +801,6 @@
       }
 
       renderDemo(demo);
-      document.querySelectorAll(".skel").forEach((el) => el.classList.remove("skel"));
 
       const freshness = demo.data_freshness || {};
       const ageSec = Number(freshness.age_sec);
